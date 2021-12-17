@@ -7,6 +7,8 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include <Runtime/Engine/Classes/Kismet/KismetMathLibrary.h>
+#include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
 
 
 // Sets default values
@@ -95,16 +97,23 @@ void APaintProjectile::ShootProjectile(const FVector& ShootDirection)
 
 void APaintProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	FVector DecalSize(50.f, 50.f, 50.f);
+	
 	FRotator DecalRotation = Hit.Location.Rotation();
 	FVector DecalLocation = Hit.Location;
 
 	ADecalActor* PaintSplashDecal = GetWorld()->SpawnActor<ADecalActor>(DecalLocation, DecalRotation);
 
+	//set decal material and size
+	FVector DecalSize(100.f, 100.f, 100.f);
 	PaintSplashDecal->SetDecalMaterial(MaterialInstanceForDecal);
-	PaintSplashDecal->SetLifeSpan(2.0f);
 	PaintSplashDecal->GetDecal()->DecalSize = DecalSize;
 
+	//set decal life span and fade out. life span is time before starting fade out + fade out duration
+	PaintSplashDecal->GetDecal()->FadeStartDelay = 2.5f;
+	PaintSplashDecal->GetDecal()->FadeDuration = 2.f;
+	PaintSplashDecal->SetLifeSpan(PaintSplashDecal->GetDecal()->FadeStartDelay + PaintSplashDecal->GetDecal()->FadeDuration);
+
+	//destroy the PaintProjectile Actor
 	Destroy();
 }
 
