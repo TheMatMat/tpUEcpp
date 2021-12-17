@@ -16,6 +16,15 @@ public:
 
 	UFUNCTION()
 	void OnPlayerDeath(AController* PlayerController);
+
+	UFUNCTION()
+	void OnRespawnTimerEnd();
+
+	UPROPERTY()
+	FTimerHandle RespawnWaitTimeHandle;
+
+	UPROPERTY()
+	AController* PlayerControllerForRespawn;
 };
 
 

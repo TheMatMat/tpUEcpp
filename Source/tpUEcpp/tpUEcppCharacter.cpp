@@ -207,7 +207,6 @@ void AtpUEcppCharacter::ApplyLifeChange(float LifeAmount)
 
 		if (PlayerController != nullptr && GameMode != nullptr)
 		{
-			PlayerController->UnPossess();
 			GameMode->OnPlayerDeath(PlayerController);
 		}
 		

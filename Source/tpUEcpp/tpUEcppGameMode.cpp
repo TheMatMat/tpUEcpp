@@ -16,7 +16,17 @@ AtpUEcppGameMode::AtpUEcppGameMode()
 
 void AtpUEcppGameMode::OnPlayerDeath(AController* PlayerController)
 {
-	GLog->Log("InGameMode");
+	PlayerControllerForRespawn = PlayerController;
 
-	RestartPlayerAtPlayerStart(PlayerController, ChoosePlayerStart(PlayerController));
+	if (PlayerControllerForRespawn != nullptr)
+	{
+		PlayerControllerForRespawn->UnPossess();
+		GetWorld()->GetTimerManager().SetTimer(RespawnWaitTimeHandle, this, &AtpUEcppGameMode::OnRespawnTimerEnd, 3.f, false);
+	}
+}
+
+void AtpUEcppGameMode::OnRespawnTimerEnd()
+{
+	RestartPlayerAtPlayerStart(PlayerControllerForRespawn, ChoosePlayerStart(PlayerControllerForRespawn));
+	PlayerControllerForRespawn = nullptr;
 }
