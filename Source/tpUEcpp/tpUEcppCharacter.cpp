@@ -62,7 +62,10 @@ AtpUEcppCharacter::AtpUEcppCharacter()
 
 	//Speed
 	WalkSpeed = 200.f;
-	RunSpeed = 900.f;
+	RunSpeed = 900.f;	
+	WalkSpeedCrouch = 50.f;
+	RunSpeedCrouch = 400.f;
+	isCrouch = false;
 
 	//PickUp
 	PickedUpComponent = nullptr;
@@ -79,7 +82,10 @@ void AtpUEcppCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &AtpUEcppCharacter::OnStartRun);
-	PlayerInputComponent->BindAction("Run", IE_Released, this, &AtpUEcppCharacter::OnStopRun);
+	PlayerInputComponent->BindAction("Run", IE_Released, this, &AtpUEcppCharacter::OnStopRun);	
+	
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AtpUEcppCharacter::OnStartCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AtpUEcppCharacter::OnStopCrouch);
 
 	PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AtpUEcppCharacter::PickUp);
 
@@ -180,11 +186,29 @@ void AtpUEcppCharacter::BeginPlay()
 
 void AtpUEcppCharacter::OnStartRun()
 {
-	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	if (isCrouch)
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeedCrouch;
+	else
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 }
 
 void AtpUEcppCharacter::OnStopRun()
 {
+	if (isCrouch)
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeedCrouch;
+	else
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AtpUEcppCharacter::OnStartCrouch()
+{
+	isCrouch = true;
+	GetCharacterMovement()->MaxWalkSpeed = WalkSpeedCrouch;
+}
+
+void AtpUEcppCharacter::OnStopCrouch()
+{
+	isCrouch = false;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 }
 
@@ -289,4 +313,6 @@ void AtpUEcppCharacter::FireProjectile()
 	APaintProjectile* Projectile = World->SpawnActor<APaintProjectile>(APaintProjectile::StaticClass(), PaintProjectileSpawner, PaintProjectileRotation, SpawnParams);
 
 }
+
+
 

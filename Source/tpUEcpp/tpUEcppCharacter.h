@@ -32,16 +32,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
-	/** PickUp*/
-	UPROPERTY(VisibleAnywhere)
-	class UPrimitiveComponent* PickedUpComponent;
-
-	UPROPERTY(VisibleAnywhere)
-	class USceneComponent* GrabbedObjectHandler;
-
-	UPROPERTY(VisibleAnywhere)
-	class USceneComponent* LineTraceStart;
-
 	/** Player life. */
 	UPROPERTY(EditAnywhere, Category= LifeManagement)
 	float Life;
@@ -59,6 +49,25 @@ public:
 	UPROPERTY(EditAnywhere, Category = Speed)
 		float RunSpeed;
 
+	UPROPERTY(EditAnywhere, Category = Speed)
+		float WalkSpeedCrouch;
+
+	UPROPERTY(EditAnywhere, Category = Speed)
+		float RunSpeedCrouch;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+		bool isCrouch;
+
+	/** PickUp*/
+	UPROPERTY(VisibleAnywhere)
+		class UPrimitiveComponent* PickedUpComponent;
+
+	UPROPERTY(VisibleAnywhere)
+		class USceneComponent* GrabbedObjectHandler;
+
+	UPROPERTY(VisibleAnywhere)
+		class USceneComponent* LineTraceStart;
+
 protected:
 
 	void BeginPlay() override;
@@ -68,6 +77,12 @@ protected:
 	
 	UFUNCTION()
 	void OnStopRun();
+
+	UFUNCTION()
+	void OnStartCrouch();
+
+	UFUNCTION()
+	void OnStopCrouch();
 
 	UFUNCTION()
 	void PickUp();
