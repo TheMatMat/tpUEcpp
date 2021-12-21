@@ -66,6 +66,7 @@ AtpUEcppCharacter::AtpUEcppCharacter()
 	WalkSpeedCrouch = 50.f;
 	RunSpeedCrouch = 400.f;
 	isCrouch = false;
+	isLockView = false;
 
 	//PickUp
 	PickedUpComponent = nullptr;
@@ -86,6 +87,9 @@ void AtpUEcppCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AtpUEcppCharacter::OnStartCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AtpUEcppCharacter::OnStopCrouch);
+	
+	PlayerInputComponent->BindAction("LockView", IE_Pressed, this, &AtpUEcppCharacter::OnStartStrafe);
+	PlayerInputComponent->BindAction("LockView", IE_Released, this, &AtpUEcppCharacter::OnStopStrafe);
 
 	PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AtpUEcppCharacter::PickUp);
 
@@ -210,6 +214,18 @@ void AtpUEcppCharacter::OnStopCrouch()
 {
 	isCrouch = false;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+}
+
+void AtpUEcppCharacter::OnStartStrafe()
+{
+	isLockView = true;
+	bUseControllerRotationYaw = true;
+}
+
+void AtpUEcppCharacter::OnStopStrafe()
+{
+	isLockView = false;
+	bUseControllerRotationYaw = false;
 }
 
 void AtpUEcppCharacter::ApplyLifeChange(float LifeAmount)

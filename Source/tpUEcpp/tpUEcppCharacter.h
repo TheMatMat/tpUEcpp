@@ -56,7 +56,10 @@ public:
 		float RunSpeedCrouch;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
-		bool isCrouch;
+		bool isCrouch;	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Speed)
+		bool isLockView;
 
 	/** PickUp*/
 	UPROPERTY(VisibleAnywhere)
@@ -83,6 +86,12 @@ protected:
 
 	UFUNCTION()
 	void OnStopCrouch();
+
+	UFUNCTION()
+	void OnStartStrafe();
+
+	UFUNCTION()
+	void OnStopStrafe();
 
 	UFUNCTION()
 	void PickUp();
