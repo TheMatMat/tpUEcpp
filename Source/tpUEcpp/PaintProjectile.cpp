@@ -102,6 +102,7 @@ void APaintProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, U
 	FVector DecalLocation = Hit.Location;
 
 	ADecalActor* PaintSplashDecal = GetWorld()->SpawnActor<ADecalActor>(DecalLocation, DecalRotation);
+	PaintSplashDecal->SetActorRotation(DecalRotation);
 
 	//set decal material and size
 	FVector DecalSize(100.f, 100.f, 100.f);
