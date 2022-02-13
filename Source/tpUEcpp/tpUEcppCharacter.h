@@ -137,7 +137,7 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ApplyLifeChange(float LifeAmount);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FireProjectile)
